@@ -58,7 +58,7 @@
 
         <service
             android:name=".CapPhoto"
-            android:enabled="true"></service>
+            android:enabled="true" />
 
     </application>
 

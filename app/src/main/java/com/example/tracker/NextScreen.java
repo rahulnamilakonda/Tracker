@@ -20,7 +20,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.Calendar;
 
 public class NextScreen extends AppCompatActivity implements SensorEventListener {
-    private static final int SENSOR_SENSITIVITY = 8;
+    //Sensor Sensitivity max = 8
+    private static final int SENSOR_SENSITIVITY = 4;
     protected final String TAG = getClass().getSimpleName();
     private final Intent callIntent = new Intent(Intent.ACTION_CALL);
     Intent service;
