@@ -1,5 +1,6 @@
 package com.example.tracker;
 
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -134,14 +135,15 @@ public class NextScreen extends AppCompatActivity implements SensorEventListener
                 service = new Intent(getBaseContext(), CapPhoto.class);
                 cal.add(Calendar.SECOND, 15);
                 //TAKE PHOTO EVERY 15 SECONDS
-                PendingIntent pintent = PendingIntent.getService(this, 0, service, 0);
+                @SuppressLint("UnspecifiedImmutableFlag")
+                PendingIntent pintent = PendingIntent.getService(getApplicationContext(), 0, service, 0);
                 AlarmManager alarm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
                 alarm.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(),
                         60 * 60 * 1000, pintent);
+                Log.i("Mail", "Captured Successfully");
                 startService(service);
                 //Toast
-
                 Toast.makeText(getApplicationContext(), "far", Toast.LENGTH_SHORT).show();
             }
 

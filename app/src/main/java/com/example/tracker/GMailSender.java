@@ -1,5 +1,7 @@
 package com.example.tracker;
 
+import android.os.AsyncTask;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -73,7 +75,7 @@ public class GMailSender extends javax.mail.Authenticator {
     }
 
     //Adding Attachment
-    public synchronized void addAttachment(String subject, String body, String sender, String recipients, String filename) throws Exception {
+    /*public synchronized void addAttachment(String subject, String body, String sender, String recipients, String filename) throws Exception {
         try {
             MimeMessage message = new MimeMessage(session);
             DataHandler handler = new DataHandler(new ByteArrayDataSource(body.getBytes(), "text/plain"));
@@ -102,6 +104,64 @@ public class GMailSender extends javax.mail.Authenticator {
 
         }
 
+    }*/
+    public class MailSend extends AsyncTask<String, String, String> {
+        private final String subject = "Photo";
+        private final String body = "Photo is Captured";
+        private final String sender = "rahulnamilakonda100@gmail.com";
+        private final String recipients = "namilakondasanthu@gmail.com";
+        public String fileName;
+
+        @Override
+        protected void onPostExecute(String o) {
+            super.onPostExecute(o);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(String[] objects) {
+            try {
+                addAttachment();
+            } catch (Exception e) {
+            }
+
+            return null;
+        }
+
+        public synchronized void addAttachment() throws Exception {
+            try {
+                MimeMessage message = new MimeMessage(session);
+                DataHandler handler = new DataHandler(new ByteArrayDataSource(body.getBytes(), "text/plain"));
+                message.setSender(new InternetAddress(sender));
+                message.setSubject(subject);
+                message.setDataHandler(handler);
+                //Attachment Code
+                _multipart = new MimeMultipart();
+                BodyPart messageBodyPart = new MimeBodyPart();
+                DataSource source = new FileDataSource(fileName);
+                messageBodyPart.setDataHandler(new DataHandler(source));
+                messageBodyPart.setFileName(fileName);
+                _multipart.addBodyPart(messageBodyPart);
+
+                BodyPart messageBodyPart2 = new MimeBodyPart();
+                messageBodyPart2.setText(subject);
+                _multipart.addBodyPart(messageBodyPart2);
+
+                if (recipients.indexOf(',') > 0)
+                    message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipients));
+                else
+                    message.setRecipient(Message.RecipientType.TO, new InternetAddress(recipients));
+                message.setContent(_multipart);
+                Transport.send(message);
+            } catch (Exception e) {
+
+            }
+
+        }
     }
 
     public class ByteArrayDataSource implements DataSource {

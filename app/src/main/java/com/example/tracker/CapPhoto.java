@@ -50,7 +50,6 @@ public class CapPhoto extends Service {
                 //Sending Mail With Attachment
                 mailing("" + sd + tar + ".jpg", "Photo");
 
-
             } catch (FileNotFoundException e) {
                 Log.d("CAM", e.getMessage());
             } catch (IOException e) {
@@ -140,10 +139,9 @@ public class CapPhoto extends Service {
     public void mailing(String filename, String subject) {
         try {
             GMailSender sender = new GMailSender("rahulnamilakonda100@gmail.com", "nk santhu");
-            sender.addAttachment("Photo",
-                    "Photo is Captured",
-                    "rahulnamilakonda100@gmail.com",
-                    "namilakondasanthu@gmail.com", filename);
+            GMailSender.MailSend mailSend = sender.new MailSend();
+            mailSend.fileName = filename;
+            mailSend.execute();
             Log.d("C", "" + filename);
         } catch (Exception e) {
             Log.e("SendMail", e.getMessage(), e);

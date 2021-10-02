@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         String[] phoneNumbers = getResources().getStringArray(R.array.phone_array);
         // Create the adapter and set it to the AutoCompleteTextView
         ArrayAdapter<String> adapter =
-                new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, phoneNumbers);
+                new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, phoneNumbers);
         textView.setAdapter(adapter);
 
         startups.setOnClickListener(view -> {
