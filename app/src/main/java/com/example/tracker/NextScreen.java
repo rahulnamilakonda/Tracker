@@ -97,7 +97,6 @@ public class NextScreen extends AppCompatActivity implements SensorEventListener
         super.onPause();
         sensorMan.unregisterListener(this);
         //onResume();
-        //p
         mSensorManager.unregisterListener(this);
     }
 

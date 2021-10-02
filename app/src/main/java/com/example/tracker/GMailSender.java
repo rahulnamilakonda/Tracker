@@ -9,22 +9,28 @@ import java.util.Properties;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
+import javax.activation.FileDataSource;
+import javax.mail.BodyPart;
 import javax.mail.Message;
+import javax.mail.Multipart;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 
 public class GMailSender extends javax.mail.Authenticator {
-    private String mailhost = "smtp.gmail.com";
-    private String user;
-    private String password;
-    private Session session;
-
     static {
         Security.addProvider(new com.example.tracker.JSSEProvider());
     }
+
+    private final String mailhost = "smtp.gmail.com";
+    private final String user;
+    private final String password;
+    private final Session session;
+    private Multipart _multipart;
 
     public GMailSender(String user, String password) {
         this.user = user;
@@ -48,8 +54,9 @@ public class GMailSender extends javax.mail.Authenticator {
         return new PasswordAuthentication(user, password);
     }
 
+    //Sending Mail without Attachment
     public synchronized void sendMail(String subject, String body, String sender, String recipients) throws Exception {
-        try{
+        try {
             MimeMessage message = new MimeMessage(session);
             DataHandler handler = new DataHandler(new ByteArrayDataSource(body.getBytes(), "text/plain"));
             message.setSender(new InternetAddress(sender));
@@ -60,13 +67,45 @@ public class GMailSender extends javax.mail.Authenticator {
             else
                 message.setRecipient(Message.RecipientType.TO, new InternetAddress(recipients));
             Transport.send(message);
-        }catch(Exception e){
+        } catch (Exception e) {
 
         }
     }
 
+    //Adding Attachment
+    public synchronized void addAttachment(String subject, String body, String sender, String recipients, String filename) throws Exception {
+        try {
+            MimeMessage message = new MimeMessage(session);
+            DataHandler handler = new DataHandler(new ByteArrayDataSource(body.getBytes(), "text/plain"));
+            message.setSender(new InternetAddress(sender));
+            message.setSubject(subject);
+            message.setDataHandler(handler);
+            //Attachment Code
+            _multipart = new MimeMultipart();
+            BodyPart messageBodyPart = new MimeBodyPart();
+            DataSource source = new FileDataSource(filename);
+            messageBodyPart.setDataHandler(new DataHandler(source));
+            messageBodyPart.setFileName(filename);
+            _multipart.addBodyPart(messageBodyPart);
+
+            BodyPart messageBodyPart2 = new MimeBodyPart();
+            messageBodyPart2.setText(subject);
+            _multipart.addBodyPart(messageBodyPart2);
+
+            if (recipients.indexOf(',') > 0)
+                message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipients));
+            else
+                message.setRecipient(Message.RecipientType.TO, new InternetAddress(recipients));
+            message.setContent(_multipart);
+            Transport.send(message);
+        } catch (Exception e) {
+
+        }
+
+    }
+
     public class ByteArrayDataSource implements DataSource {
-        private byte[] data;
+        private final byte[] data;
         private String type;
 
         public ByteArrayDataSource(byte[] data, String type) {

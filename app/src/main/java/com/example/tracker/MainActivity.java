@@ -21,10 +21,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Button startups = findViewById(R.id.Submit);
 
-        AutoCompleteTextView textView = (AutoCompleteTextView) findViewById(R.id.PhoneField);
-// Get the string array
+        AutoCompleteTextView textView = findViewById(R.id.PhoneField);
+        // Get the string array
         String[] phoneNumbers = getResources().getStringArray(R.array.phone_array);
-// Create the adapter and set it to the AutoCompleteTextView
+        // Create the adapter and set it to the AutoCompleteTextView
         ArrayAdapter<String> adapter =
                 new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, phoneNumbers);
         textView.setAdapter(adapter);

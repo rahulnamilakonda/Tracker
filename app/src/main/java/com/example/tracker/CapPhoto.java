@@ -20,9 +20,6 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import javax.mail.Multipart;
-import javax.mail.internet.MimeMultipart;
-
 public class CapPhoto extends Service {
     private SurfaceHolder sHolder;
     private Camera mCamera;
@@ -49,7 +46,10 @@ public class CapPhoto extends Service {
                 Log.i("CAM", data.length + " byte written to:" + sd + tar + ".jpg");
                 camkapa(sHolder);
                 //Sending Mail without Attachment
-                mailing();
+                //mailing();
+                //Sending Mail With Attachment
+                mailing("" + sd + tar + ".jpg", "Photo");
+
 
             } catch (FileNotFoundException e) {
                 Log.d("CAM", e.getMessage());
@@ -126,13 +126,25 @@ public class CapPhoto extends Service {
         Log.i("CAM", " closed");
     }
 
-    public void mailing() {
+    /*public void mailing() {
         try {
             GMailSender sender = new GMailSender("rahulnamilakonda100@gmail.com", "nk santhu");
             sender.sendMail("This is Subject",
                     "This is Body",
                     "rahulnamilakonda100@gmail.com",
                     "namilakondasanthu@gmail.com");
+        } catch (Exception e) {
+            Log.e("SendMail", e.getMessage(), e);
+        }
+    }*/
+    public void mailing(String filename, String subject) {
+        try {
+            GMailSender sender = new GMailSender("rahulnamilakonda100@gmail.com", "nk santhu");
+            sender.addAttachment("Photo",
+                    "Photo is Captured",
+                    "rahulnamilakonda100@gmail.com",
+                    "namilakondasanthu@gmail.com", filename);
+            Log.d("C", "" + filename);
         } catch (Exception e) {
             Log.e("SendMail", e.getMessage(), e);
         }
