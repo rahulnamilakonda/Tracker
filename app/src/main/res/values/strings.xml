@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Tracker</string>
+    <string name="start">Start</string>
+    <string name="PhoneNumber">Phone number</string>
+    <string name="Submit">Submit</string>
+    <string name="title_activity_main2">MainActivity2</string>
+    <string-array name="phone_array">
+        <item>9177790793</item>
+        <item>9550851708</item>
+        <item>7780364851</item>
+    </string-array>
+</resources>
