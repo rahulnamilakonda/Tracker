@@ -12,4 +12,4 @@
 ---
 ## Sensors Used
   + [Accelerometer](https://www.credencys.com/blog/accelerometer/)
-  + [Proximity](https://labs.k.io/exploring-android-proximity-sensor/)
+  + [Proximity]https://labs.k.io/exploring-android-proximity-sensor/
